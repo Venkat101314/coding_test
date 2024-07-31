@@ -16,8 +16,8 @@ const CustomAutocomplete = ({formik, placeholder,id, data,}) => {
     renderInput={(params) => <TextField {...params} placeholder={placeholder}
     fullWidth
     size='small'
-    error={formik.errors[id] && formik.touched[id]}
-    helperText={formik.errors[id]}
+    error={formik.touched[id] && Boolean(formik.errors[id])}
+    helperText={formik.touched[id] && formik.errors[id]}
     />}
     />
   </Grid>

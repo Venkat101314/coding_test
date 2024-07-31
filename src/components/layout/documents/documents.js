@@ -1,18 +1,19 @@
 import { Button, Checkbox, FormControlLabel, Grid, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import * as yup from "yup"
 import CustomTextfield from '../../customInputs/customTextfield'
 import CustomAutocomplete from '../../customInputs/customAutocomplete'
 
 const Documents = ({nextStep,postData, setPostData}) => {
+    const {storeName, storeDesc,storeAdd1,storeAdd2,storeCountry, storeState, storeCity, storePostalCode } = postData.documentDetails
     const [logo, setLogo] = useState(null)
     const validationSchema = yup.object({
         storeName: yup.string().required('This field is required'),
         storeDesc : yup.string().required('This field is required'),
         add1:yup.string().required('This field is required'),
         add2: yup.string().required('This field is required'),
-        countrty: yup.object().required(),
+        country: yup.object().required(),
         state:yup.object().required(),
         city: yup.object().required(),
         postalCode:yup.string().required('This field is required'),
@@ -33,9 +34,20 @@ const Documents = ({nextStep,postData, setPostData}) => {
         onSubmit: handleNext,       
     })
     
+console.log('first', formik.errors)
     function handleNext(){
 // nextStep('2')
-console.log('first', postData)
+setPostData(prev=>({...prev, documentDetails:{
+    storeAdd1: formik.values.add1,
+    storeAdd2: formik.values.add2,
+    storeCity: formik.values.city,
+    storeCountry: formik.values.country,
+    storeDesc: formik.values.storeDesc,
+    storeName: formik.values.storeName,
+    storePostalCode: formik.values.postalCode,
+    storeState: formik.values.state
+}}))
+nextStep('3')
     }
     function handleBack(){
         nextStep('1')
@@ -49,6 +61,22 @@ console.log('first', postData)
         { label: "Schindler's List", year: 1993 },
         { label: 'Pulp Fiction', year: 1994 },
     ]
+
+    useEffect(()=>{
+        if(storeDesc!==""){
+formik.setValues({
+    add1:storeAdd1,
+    add2: storeAdd2,
+    city: storeCity,
+    country: storeCountry,
+    postalCode: storePostalCode,
+    state : storeState,
+    storeDesc: storeDesc,
+    storeName : storeName
+})
+        }
+       
+    },[])
   return (
     <Fragment >
     <Typography variant='h6'>Document Details</Typography>

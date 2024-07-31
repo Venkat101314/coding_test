@@ -9,8 +9,8 @@ placeholder={placeholder}
 fullWidth
 size='small'
 sx={{margin:1}}
-error={formik.errors[id] && formik.touched[id]}
-helperText={formik.errors[id]}
+error={formik.touched[id] && Boolean(formik.errors[id])}
+helperText={formik.touched[id] && formik.errors[id]}
 />
   )
 }
